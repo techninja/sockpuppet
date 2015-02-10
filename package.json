@@ -1,0 +1,16 @@
+{
+  "name": "sockpuppet",
+  "version": "0.1.0",
+  "description": "A WebGL puppet experimental interaction test",
+  "main": "sockpuppet.js",
+  "author": "techninja",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/techninja/sockpuppet.git"
+  },
+  "dependencies": {
+    "express": "~4.11.2",
+    "socket.io": "~1.3.3"
+  }
+}
