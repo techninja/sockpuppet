@@ -22,7 +22,7 @@
 
 		body, html {
 
-			width: 100%; height: 100%;	
+			width: 100%; height: 100%;
 			overflow: hidden;
 			margin: 0;
 			padding: 0;
@@ -143,21 +143,21 @@
 			var projector = new THREE.Projector();
 
 			var dae;
-			        
+
 			// Camera
 			var camera = new THREE.PerspectiveCamera(50, window.innerWidth/window.innerHeight, 1, 1000);
-			                
+
 			var renderer = new THREE.WebGLRenderer({alpha: true});
 			renderer.setClearColor( 0x000000, 0 );
 			renderer.setSize(window.innerWidth, window.innerHeight);
 			document.body.appendChild(renderer.domElement);
-			                
+
 			camera.position.y = 15;
 			camera.position.z = 70;
 
 			var ambientLight = new THREE.AmbientLight(0xFFFFFF);
 			scene.add(ambientLight);
-			                
+
 			var directionalLight = new THREE.DirectionalLight( 0xffffff, 1.3);
 			directionalLight.position.set( 0, 0, 1 );
 			scene.add( directionalLight );
@@ -167,7 +167,7 @@
 			var joint1, jointNeck, jointShoulders;
 
 			var EYEBROWN_INIT_ROTATION = 0.05;
-			                                
+
 			var loader = new THREE.ColladaLoader();
 			loader.options.convertUpAxis = true;
 
@@ -217,7 +217,7 @@
 
 			    jointNeck = joint1.getObjectByName( "jointNeck", true );
 			    jointShoulders = joint1.getObjectByName( "jointShoulders", true );
-			    
+
 			    eyeL.material.transparent = true;
 			    eyeR.material.transparent = true;
 
@@ -316,7 +316,7 @@
 				bones.jointNeck.rotation.x = mouse.cX * 2;
 				bones.jointNeck.rotation.z = mouse.cY * 2;
 				bones.jointNeck.rotation.y = -mouse.cX * 1;
-				
+
 				bones.jointShoulders.rotation.x = mouse.cX * 1;
 				bones.jointShoulders.rotation.z = mouse.cY * 1;
 				bones.jointShoulders.rotation.y = -mouse.cX * 1;
@@ -369,7 +369,7 @@
 			function blinkLoop() {
 
 				setTimeout(function() {
-					
+
 					if (!closedEyes) eyeL.scale.x = eyeR.scale.x = 0.1;
 
 					setTimeout(function() {
@@ -441,11 +441,11 @@
 			this.cY = 0;
 
 			var self = this;
-	
+
 		    window.addEventListener('mousemove', function (event) {
 
 		    	if (modeAuto) return;
-		        
+
 		        self.x = event.clientX;
 		        self.y = event.clientY;
 
@@ -459,7 +459,7 @@
 				self.cY = self.relY - 0.5;
 		    });
 		}
-		
+
 		/* ------------------------------------------------ CONTROLS */
 
 		$(document).ready(function() {
@@ -552,17 +552,7 @@
 
 			selectItem($('.mode-wait'));
 		});
-
-        var _gaq = _gaq || [];
-        _gaq.push(['_setAccount', 'UA-36310679-1']);
-        _gaq.push(['_trackPageview']);
-
-        (function() {
-            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-        })();
-
+    
 		</script>
 
 		<div id="controls">
