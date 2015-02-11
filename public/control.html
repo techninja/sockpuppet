@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+
+    <title>Gyro Data Streamer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="https://rawgit.com/tomgco/gyro.js/master/js/gyro.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+      }
+    </style>
+
+  </head>
+  <body>
+    <h2>Move device to set head position, touch screen to control mouth.</h2>
+    <div id="status">Loading...</div>
+  <script type="text/javascript">
+    var socket = io();
+    gyro.frequency = 100;
+    gyro.startTracking(function(o) {
+      var d = {
+        x: Math.round((o.x / 10) * 1000)/1000,
+        y: Math.round((o.y / 10) * 1000)/1000,
+        z: Math.round((o.z / 10) * 1000)/1000,
+        a: Math.round((o.alpha / 10) * 1000)/1000,
+        b: Math.round((o.beta / 10) * 1000)/1000,
+        g: Math.round((o.gamma / 10) * 1000)/1000
+      };
+
+      socket.emit('gdata', d);
+    });
+
+    $(function() {
+      $('#status').text('Ready!');
+
+      // Bind touch events across screen for opening mouth
+      // TODO: Could very easily control eyebrows or eyes with separate touch
+      // control boxes.
+      $(document).bind('touchstart touchmove', function(e){
+        var orig = e.originalEvent;
+
+        // Ignore any touchstart / touchmove here except the first
+        if (orig.touches.length == 1){
+          var pagePercent = Math.round((orig.changedTouches[0].pageY / $(document).height())* 100);
+          socket.emit('touch',
+            (100 - pagePercent) / 100
+          );
+
+          $('#status').text('TOUCH @ ' + pagePercent + '%');
+        }
+        return false;
+      });
+
+      $(document).bind('touchend', function(e){
+        var orig = e.originalEvent;
+
+        // Ignore any touchend except the last one
+        if (orig.changedTouches.length == 1){
+          socket.emit('touch', -0.05);
+        }
+        $('#status').text('TOUCHEND');
+
+        return false;
+      });
+    });
+
+  </script>
+  </body>
+</html>

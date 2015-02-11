@@ -14,6 +14,8 @@ var port = 3883;
 // Start express hosting site from "public" folder on the given port
 server.listen(port);
 app.use("/", express.static(__dirname + '/public'));
+app.use("/control", express.static(__dirname + '/public/control.html'));
+
 console.log('SockPuppet server listening on localhost:' + port);
 
 // SOCKET DATA STREAM ==========================================================
