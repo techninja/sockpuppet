@@ -16,6 +16,7 @@
 		<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
 		<script src="http://cdnjs.cloudflare.com/ajax/libs/gsap/1.13.1/TweenLite.min.js"></script>
 		<script src="ColladaLoader.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
 
 		<style>
@@ -117,6 +118,8 @@
 	</body>
 
 		<script type="text/javascript">
+
+    var socket = io();
 
 		var CLOSED = -0.08;
 
@@ -290,6 +293,29 @@
 				}
 			}, false);
 
+      // On gyro data input, move stuff!
+      socket.on('gdata', function(d) {
+        if (bones.jointNeck) {
+          // We get X, Y, Z from gyro.js, plus Alpha, Beta and Gamma (a,b,c)
+          //bones.jointNeck.rotation.y = d.x;
+          bones.jointNeck.rotation.x = d.g / 2;
+          bones.jointNeck.rotation.z = 0.1 - (d.b / 4);
+        }
+
+        // TODO: Should probably move the shoulders too...
+        /*
+        bones.jointShoulders.rotation.x = d.x * 1;
+        bones.jointShoulders.rotation.z = d.z * 1;
+        bones.jointShoulders.rotation.y = -d.y * 1;
+        */
+      });
+
+      // On touch input, move the mouth
+      socket.on('touch', function(amt) {
+        nMouthOpen = amt;
+      });
+
+
 			document.addEventListener('mouseup', function(ev) {
 				if (modeAuto) return;
 				eyeBrownOnlyOne = false;
@@ -313,6 +339,7 @@
 			    bones.jointJaw.rotation.z = oJaw.z - mouthOpen;
 			    bones.jointPalate.rotation.z = oPalate.z + mouthOpen;
 
+        /* // Keeping this code here for reference, though it shouldn't be used.
 				bones.jointNeck.rotation.x = mouse.cX * 2;
 				bones.jointNeck.rotation.z = mouse.cY * 2;
 				bones.jointNeck.rotation.y = -mouse.cX * 1;
@@ -320,6 +347,7 @@
 				bones.jointShoulders.rotation.x = mouse.cX * 1;
 				bones.jointShoulders.rotation.z = mouse.cY * 1;
 				bones.jointShoulders.rotation.y = -mouse.cX * 1;
+        */
 
 				var eyeV = mouse.cY * 8;
 				var eyeH = mouse.cX * 8;
@@ -552,7 +580,7 @@
 
 			selectItem($('.mode-wait'));
 		});
-    
+
 		</script>
 
 		<div id="controls">
@@ -608,4 +636,3 @@
 		</div>
 		<div id="credits">Sock Puppet demo by <a href="http://www.mediosyproyectos.com/" target="_blank">myp"</a>. Character by <a href="http://www.edshark.com/" target="_blank">Ed Shark</a>.</a></div>
 </html>
-
